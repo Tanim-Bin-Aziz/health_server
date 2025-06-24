@@ -7,7 +7,7 @@ const getAllFromDB = async (params: any) => {
   const adminSearchAblefields = ["name", "email"];
   const { searchTerm, ...filterData } = params;
 
-  console.log(filterData);
+  // console.log(filterData);
 
   if (params.searchTerm) {
     andConditions.push({
@@ -29,7 +29,7 @@ const getAllFromDB = async (params: any) => {
     });
   }
 
-  console.dir(andConditions, { depth: "infinity" });
+  // console.dir(andConditions, { depth: "infinity" });
   const whereConditions: Prisma.AdminWhereInput = { AND: andConditions };
   const result = await prisma.admin.findMany({
     where: whereConditions,

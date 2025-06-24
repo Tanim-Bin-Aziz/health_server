@@ -3,11 +3,15 @@ import { Prisma, PrismaClient } from "../../../generated/prisma";
 const prisma = new PrismaClient();
 
 const getAllFromDB = async (params: any) => {
-  const addConditions: Prisma.AdminWhereInput[] = [];
+  const andConditions: Prisma.AdminWhereInput[] = [];
+  const adminSearchAblefields = ["name", "email"];
+  const { searchTerm, ...filterData } = params;
+
+  console.log(filterData);
 
   if (params.searchTerm) {
-    addConditions.push({
-      OR: ["name", "email"].map((field) => ({
+    andConditions.push({
+      OR: adminSearchAblefields.map((field) => ({
         [field]: {
           contains: params.searchTerm,
           mode: "insensitive",
@@ -15,9 +19,18 @@ const getAllFromDB = async (params: any) => {
       })),
     });
   }
+  if (Object.keys(filterData).length > 0) {
+    andConditions.push({
+      AND: Object.keys(filterData).map((key) => ({
+        [key]: {
+          equals: filterData[key],
+        },
+      })),
+    });
+  }
 
-  console.dir(addConditions, { depth: "infinity" });
-  const whereConditions: Prisma.AdminWhereInput = { AND: addConditions };
+  console.dir(andConditions, { depth: "infinity" });
+  const whereConditions: Prisma.AdminWhereInput = { AND: andConditions };
   const result = await prisma.admin.findMany({
     where: whereConditions,
   });

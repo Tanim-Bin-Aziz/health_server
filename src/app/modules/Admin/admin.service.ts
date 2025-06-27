@@ -1,4 +1,4 @@
-import { Admin, Prisma } from "../../../generated/prisma";
+import { Admin, Prisma, UserStatus } from "../../../generated/prisma";
 import { paginationHelpar } from "../../../helpars/paginationHelpar";
 import prisma from "../../../shared/prisma";
 import { adminSearchAblefields } from "./admin.constant";
@@ -60,7 +60,7 @@ const getAllFromDB = async (params: any, options: any) => {
     data: result,
   };
 };
-
+//data get method
 const getByIdFromDB = async (id: string) => {
   const result = await prisma.admin.findUnique({
     where: {
@@ -69,7 +69,7 @@ const getByIdFromDB = async (id: string) => {
   });
   return result;
 };
-
+//data update method
 const updateIntoDB = async (id: string, data: Partial<Admin>) => {
   await prisma.admin.findFirstOrThrow({
     where: {
@@ -84,7 +84,13 @@ const updateIntoDB = async (id: string, data: Partial<Admin>) => {
   });
   return result;
 };
+// data deleted method
 const deleteFromDb = async (id: string) => {
+  await prisma.admin.findFirstOrThrow({
+    where: {
+      id,
+    },
+  });
   const result = await prisma.$transaction(async (transactionClient) => {
     const adminDeletedData = await transactionClient.admin.delete({
       where: {
@@ -102,9 +108,38 @@ const deleteFromDb = async (id: string) => {
   return result;
 };
 
+//deleted data collections
+const softDeleteFromDb = async (id: string) => {
+  await prisma.admin.findFirstOrThrow({
+    where: {
+      id,
+    },
+  });
+  const result = await prisma.$transaction(async (transactionClient) => {
+    const adminDeletedData = await transactionClient.admin.update({
+      where: {
+        id,
+      },
+      data: { isDeleted: true },
+    });
+    const userDeletedData = await transactionClient.user.update({
+      where: {
+        email: adminDeletedData.email,
+      },
+      data: {
+        status: UserStatus.DELETED,
+      },
+    });
+    return adminDeletedData;
+  });
+
+  return result;
+};
+
 export const AdminService = {
   updateIntoDB,
   getByIdFromDB,
   getAllFromDB,
   deleteFromDb,
+  softDeleteFromDb,
 };

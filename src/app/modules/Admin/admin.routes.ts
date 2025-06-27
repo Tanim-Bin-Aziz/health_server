@@ -6,5 +6,6 @@ const router = express.Router();
 router.get("/", AdminController.getAllFromDB);
 router.get("/:id", AdminController.getByIdFromDB);
 router.patch("/:id", AdminController.updateIntoDB);
+router.delete("/:id", AdminController.deleteFromDb);
 
 export const AdminRoutes = router;

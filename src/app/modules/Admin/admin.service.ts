@@ -30,7 +30,9 @@ const getAllFromDB = async (params: any, options: any) => {
       })),
     });
   }
-
+  andConditions.push({
+    isDeleted: false,
+  });
   // console.dir(andConditions, { depth: "infinity" });
   const whereConditions: Prisma.AdminWhereInput = { AND: andConditions };
   const result = await prisma.admin.findMany({
@@ -61,19 +63,25 @@ const getAllFromDB = async (params: any, options: any) => {
   };
 };
 //data get method
-const getByIdFromDB = async (id: string) => {
+const getByIdFromDB = async (id: string): Promise<Admin | null> => {
   const result = await prisma.admin.findUnique({
     where: {
       id,
+      isDeleted: false,
     },
   });
   return result;
 };
 //data update method
-const updateIntoDB = async (id: string, data: Partial<Admin>) => {
+
+const updateIntoDB = async (
+  id: string,
+  data: Partial<Admin>
+): Promise<Admin> => {
   await prisma.admin.findFirstOrThrow({
     where: {
       id,
+      isDeleted: false,
     },
   });
   const result = await prisma.admin.update({
@@ -85,7 +93,7 @@ const updateIntoDB = async (id: string, data: Partial<Admin>) => {
   return result;
 };
 // data deleted method
-const deleteFromDb = async (id: string) => {
+const deleteFromDb = async (id: string): Promise<Admin | null> => {
   await prisma.admin.findFirstOrThrow({
     where: {
       id,
@@ -97,7 +105,7 @@ const deleteFromDb = async (id: string) => {
         id,
       },
     });
-    const userDeletedData = await transactionClient.user.delete({
+    await transactionClient.user.delete({
       where: {
         email: adminDeletedData.email,
       },
@@ -109,10 +117,11 @@ const deleteFromDb = async (id: string) => {
 };
 
 //deleted data collections
-const softDeleteFromDb = async (id: string) => {
+const softDeleteFromDb = async (id: string): Promise<Admin | null> => {
   await prisma.admin.findFirstOrThrow({
     where: {
       id,
+      isDeleted: false,
     },
   });
   const result = await prisma.$transaction(async (transactionClient) => {
@@ -122,7 +131,7 @@ const softDeleteFromDb = async (id: string) => {
       },
       data: { isDeleted: true },
     });
-    const userDeletedData = await transactionClient.user.update({
+    await transactionClient.user.update({
       where: {
         email: adminDeletedData.email,
       },

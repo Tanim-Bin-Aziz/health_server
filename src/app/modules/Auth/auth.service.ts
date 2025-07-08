@@ -6,6 +6,7 @@ import { decode } from "punycode";
 import { UserStatus } from "../../../generated/prisma";
 import config from "../../../config";
 import { string } from "zod";
+import emailSender from "./emailSender";
 
 const loginUser = async (payload: { email: string; password: string }) => {
   const userData = await prisma.user.findFirstOrThrow({
@@ -124,6 +125,25 @@ const forgotPasssword = async (payload: { email: string }) => {
     config.jwt.reset_pass_token_expires_in as string
   );
   console.log(resetPassToken);
+
+  const resetPassLink =
+    config.reset_pass_link + `?userId=${userData.id}&token${resetPassToken}`;
+  await emailSender(
+    userData.email,
+    `<div>
+    <p> Dear User,</p>
+    <p>Your password reset link</p>
+    <a herf=${resetPassLink}>
+    <button>
+    Reset Password
+    </button>
+    
+    </a>
+    
+    
+    </div>`
+  );
+  console.log(resetPassLink);
 };
 
 export const AuthServices = {

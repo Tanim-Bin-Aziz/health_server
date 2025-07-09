@@ -2,10 +2,10 @@ import prisma from "../../../shared/prisma";
 import * as bcrypt from "bcrypt";
 import jwt, { JwtPayload, Secret } from "jsonwebtoken";
 import { jwtHelpers } from "../../../helpars/jwtHelpers";
-import { decode } from "punycode";
+
 import { UserStatus } from "../../../generated/prisma";
 import config from "../../../config";
-import { string } from "zod";
+
 import emailSender from "./emailSender";
 
 const loginUser = async (payload: { email: string; password: string }) => {
@@ -133,10 +133,12 @@ const forgotPasssword = async (payload: { email: string }) => {
     `<div>
     <p> Dear User,</p>
     <p>Your password reset link</p>
-    <a herf=${resetPassLink}>
+    <a href="${resetPassLink}">
+  
     <button>
     Reset Password
     </button>
+
     
     </a>
     

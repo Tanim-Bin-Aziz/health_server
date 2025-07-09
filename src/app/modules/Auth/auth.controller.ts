@@ -66,6 +66,9 @@ const forgotPassword = catchAsync(async (req: Request, res: Response) => {
     data: result,
   });
 });
+
+const resetPassword = catchAsync(async (req: Request, res: Response) => {});
+
 export const AuthController = {
   forgotPassword,
   changePassword,

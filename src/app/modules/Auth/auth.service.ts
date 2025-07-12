@@ -137,18 +137,20 @@ const forgotPasssword = async (payload: { email: string }) => {
   
     <button>
     Reset Password
-    </button>
-
-    
-    </a>
-    
-    
+    </button></a>
     </div>`
   );
   console.log(resetPassLink);
 };
 
+const resetPassword = async (
+  token: string,
+  payload: { id: string; password: string }
+) => {
+  console.log({ token, payload });
+};
 export const AuthServices = {
+  resetPassword,
   forgotPasssword,
   changePassword,
   loginUser,

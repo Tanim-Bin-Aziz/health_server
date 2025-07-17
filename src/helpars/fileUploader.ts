@@ -1,6 +1,14 @@
 import multer from "multer";
 import path from "path";
 
+import { v2 as cloudinary } from "cloudinary";
+
+cloudinary.config({
+  cloud_name: "dshyf27co",
+  api_key: "743122863663612",
+  api_secret: "nVuM171YNyy7ex0JzmukJhDZsdI",
+});
+
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
     cb(null, path.join(process.cwd(), "uploads"));
@@ -12,6 +20,17 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage: storage });
 
+const uploadToCloudinary = async (file: any) => {
+  cloudinary.uploader.upload(
+    "D:/Software/project_health/uploads/d858c81855e56ad8311d601935da92f5.jpg",
+    { public_id: "user_picture" },
+    function (error, result) {
+      console.log(result);
+    }
+  );
+};
+
 export const fileUploader = {
   upload,
+  uploadToCloudinary,
 };

@@ -6,13 +6,13 @@ import { fileUploader } from "../../../helpars/fileUploader";
 
 const createAdmin = async (req: any) => {
   const file = req.file;
+  console.log(req.body);
+  if (file) {
+    const uploadToCloudinary = await fileUploader.uploadToCloudinary(file);
+    req.body.admin.profilePhoto = uploadToCloudinary?.secure_url;
 
-  // if (file) {
-  //   const uploadToCloudinary = await fileUploader.uploadToCloudinary(file);
-  //   req.body.data.admin.profilePhoto = uploadToCloudinary?.secure_url;
-
-  //   console.log(req.body.data);
-  // }
+    console.log(req.body);
+  }
 
   // const hashedPassword: string = await bcrypt.hash(data.password, 12);
   // const userData = {

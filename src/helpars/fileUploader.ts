@@ -1,5 +1,5 @@
 import multer from "multer";
-import path from "path";
+import path, { resolve } from "path";
 
 import { v2 as cloudinary } from "cloudinary";
 
@@ -21,13 +21,19 @@ const storage = multer.diskStorage({
 const upload = multer({ storage: storage });
 
 const uploadToCloudinary = async (file: any) => {
-  cloudinary.uploader.upload(
-    "D:/Software/project_health/uploads/_titan eren yeager.jpg",
-    { public_id: "user_picture" },
-    function (error, result) {
-      console.log(result);
-    }
-  );
+  return new Promise((resolve, reject) => {
+    cloudinary.uploader.upload(
+      file.path,
+      { public_id: file.originalname },
+      (error, result) => {
+        if (error) {
+          reject(error);
+        } else {
+          resolve(result);
+        }
+      }
+    );
+  });
 };
 
 export const fileUploader = {

@@ -6,6 +6,7 @@ import { fileUploader } from "../../../helpars/fileUploader";
 import { userValidation } from "./user.validation";
 
 const router = express.Router();
+router.get("/", userController.getAllFromDB);
 
 router.post(
   "/create-admin",

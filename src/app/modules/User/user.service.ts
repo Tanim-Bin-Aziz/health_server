@@ -104,7 +104,6 @@ const getAllFromDB = async (params: any, options: IPaginationOptions) => {
 
   const andCondions: Prisma.UserWhereInput[] = [];
 
-  //console.log(filterData);
   if (params.searchTerm) {
     andCondions.push({
       OR: userSearchAbleFields.map((field) => ({
@@ -141,6 +140,18 @@ const getAllFromDB = async (params: any, options: IPaginationOptions) => {
         : {
             createdAt: "desc",
           },
+    select: {
+      id: true,
+      email: true,
+      role: true,
+      needPasswordChange: true,
+      status: true,
+      createdAt: true,
+      updatedAt: true,
+      admin: true,
+      patient: true,
+      doctor: true,
+    },
   });
 
   const total = await prisma.user.count({
@@ -156,10 +167,14 @@ const getAllFromDB = async (params: any, options: IPaginationOptions) => {
     data: result,
   };
 };
+const changeProfileStatus = async (id: string, data: { status: UserRole }) => {
+  console.log(id, data);
+};
 
 export const userService = {
   createAdmin,
   createDoctor,
   createPatient,
   getAllFromDB,
+  changeProfileStatus,
 };

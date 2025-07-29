@@ -99,16 +99,14 @@ const createPatient = async (req: Request): Promise<Patient> => {
 };
 
 const getAllFromDB = async (params: any, options: IPaginationOptions) => {
-  console.log(options);
   const { page, limit, skip } = paginationHelpar.calculatePagination(options);
-  const andConditions: Prisma.UserWhereInput[] = [];
-
   const { searchTerm, ...filterData } = params;
 
-  // console.log(filterData);
+  const andCondions: Prisma.UserWhereInput[] = [];
 
+  //console.log(filterData);
   if (params.searchTerm) {
-    andConditions.push({
+    andCondions.push({
       OR: userSearchAbleFields.map((field) => ({
         [field]: {
           contains: params.searchTerm,
@@ -117,8 +115,9 @@ const getAllFromDB = async (params: any, options: IPaginationOptions) => {
       })),
     });
   }
+
   if (Object.keys(filterData).length > 0) {
-    andConditions.push({
+    andCondions.push({
       AND: Object.keys(filterData).map((key) => ({
         [key]: {
           equals: (filterData as any)[key],
@@ -127,11 +126,11 @@ const getAllFromDB = async (params: any, options: IPaginationOptions) => {
     });
   }
 
-  // console.dir(andConditions, { depth: "infinity" });
-  const whereConditions: Prisma.UserWhereInput =
-    andConditions.length > 0 ? { AND: andConditions } : {};
+  const whereConditons: Prisma.UserWhereInput =
+    andCondions.length > 0 ? { AND: andCondions } : {};
+
   const result = await prisma.user.findMany({
-    where: whereConditions,
+    where: whereConditons,
     skip,
     take: limit,
     orderBy:
@@ -145,7 +144,7 @@ const getAllFromDB = async (params: any, options: IPaginationOptions) => {
   });
 
   const total = await prisma.user.count({
-    where: whereConditions,
+    where: whereConditons,
   });
 
   return {

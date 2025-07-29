@@ -167,8 +167,19 @@ const getAllFromDB = async (params: any, options: IPaginationOptions) => {
     data: result,
   };
 };
-const changeProfileStatus = async (id: string, data: { status: UserRole }) => {
-  console.log(id, data);
+const changeProfileStatus = async (id: string, status: UserRole) => {
+  const userData = await prisma.user.findFirstOrThrow({
+    where: {
+      id,
+    },
+  });
+  const updateUserStatus = await prisma.user.update({
+    where: {
+      id,
+    },
+    data: status,
+  });
+  return updateUserStatus;
 };
 
 export const userService = {

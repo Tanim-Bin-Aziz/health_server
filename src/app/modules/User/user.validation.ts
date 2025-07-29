@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { Gender } from "../../../generated/prisma";
+import { Gender, UserStatus } from "../../../generated/prisma";
 
 const createAdmin = z.object({
   password: z.string({
@@ -71,9 +71,15 @@ const createPatient = z.object({
     }),
   }),
 });
+const updateStatus = z.object({
+  body: z.object({
+    status: z.enum([UserStatus.ACTIVE, UserStatus.BLOCKED, UserStatus.DELETED]),
+  }),
+});
 
 export const userValidation = {
   createAdmin,
   createDoctor,
   createPatient,
+  updateStatus,
 };

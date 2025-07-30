@@ -6,6 +6,13 @@ import { fileUploader } from "../../../helpars/fileUploader";
 import { userValidation } from "./user.validation";
 
 const router = express.Router();
+
+router.get(
+  "/me",
+  auth(UserRole.SUPER_ADMIN, UserRole.ADMIN, UserRole.DOCTOR, UserRole.PATIENT),
+  userController.getAllFromDB
+);
+
 router.get(
   "/",
   auth(UserRole.SUPER_ADMIN, UserRole.ADMIN),

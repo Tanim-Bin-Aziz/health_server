@@ -103,7 +103,7 @@ model Patient{
 
   @@map("patients")
 
-  MedicalReport MedicalReport[]
+  medicalReport MedicalReport[]
 }
 model PatientHealthData {
   id                  String        @id @default(uuid())

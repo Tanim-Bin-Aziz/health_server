@@ -1,6 +1,7 @@
 import express from "express";
 import { UserRole } from "../../../generated/prisma";
 import auth from "../../middlewares/auth";
+import { ScheduleController } from "./schedule.controller";
 
 const router = express.Router();
 

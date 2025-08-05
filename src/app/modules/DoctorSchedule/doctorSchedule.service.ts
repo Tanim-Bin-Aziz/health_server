@@ -4,6 +4,8 @@ import { IPaginationOptions } from "../../interfaces/pagination";
 import { IAuthUser } from "../../interfaces/common";
 import { paginationHelpar } from "../../../helpars/paginationHelpar";
 import { Prisma } from "../../../generated/prisma";
+import ApiError from "../../errors/ApiError";
+import { IDoctorScheduleFilterRequest } from "./doctorSchedule.interface";
 
 const insertIntoDB = async (
   user: any,
@@ -148,7 +150,7 @@ const getAllFromDB = async (
   filters: IDoctorScheduleFilterRequest,
   options: IPaginationOptions
 ) => {
-  const { limit, page, skip } = paginationHelper.calculatePagination(options);
+  const { limit, page, skip } = paginationHelpar.calculatePagination(options);
   const { searchTerm, ...filterData } = filters;
   const andConditions = [];
 

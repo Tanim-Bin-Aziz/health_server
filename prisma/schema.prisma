@@ -44,7 +44,9 @@ model Doctor{
   review              Review[]
   doctorSpecialties DoctorSpecialties[]
   doctorSchedules DoctorSchedules[]
+  appointment Appointment[]
   @@map("doctors")
+
 
 }
 
@@ -94,10 +96,35 @@ model Patient{
   review        Review[]
   patientHealthData PatientHealthData?
   medicalReport MedicalReport[]
+  appointment Appointment[]
   @@map("patients")
 
 
 }
+
+
+model Appointment {
+  id        String  @id @default(uuid())
+  patientId String
+  patient   Patient @relation(fields: [patientId], references: [id])
+
+  doctorId String
+  doctor   Doctor @relation(fields: [doctorId], references: [id])
+
+  scheduleId String   @unique
+  schedule   Schedule @relation(fields: [scheduleId], references: [id])
+
+  videoCallingId  String
+  status          AppointmentStatus @default(SCHEDULED)
+  createdAt       DateTime          @default(now())
+  updatedAt       DateTime          @updatedAt
+  paymentStatus   PaymentStatus     @default(UNPAID)
+
+
+  @@map("appointments")
+}
+
+
 model PatientHealthData {
   id                  String        @id @default(uuid())
   patientId           String        @unique
@@ -140,15 +167,17 @@ model Schedule {
   createdAt       DateTime          @default(now())
   updatedAt       DateTime          @updatedAt
   doctorSchedules DoctorSchedules[]
+  appointment Appointment[]
   @@map("schedules")
+
 }
 model DoctorSchedules {
-  doctorId String
-  doctor   Doctor @relation(fields: [doctorId], references: [id])
-  scheduleId String
-  schedule   Schedule @relation(fields: [scheduleId], references: [id])
-  isBooked Boolean @default(false)
-  appointmentId String? @unique
+  doctorId       String
+  doctor         Doctor @relation(fields: [doctorId], references: [id])
+  scheduleId     String
+  schedule       Schedule @relation(fields: [scheduleId], references: [id])
+  isBooked       Boolean @default(false)
+  appointmentId  String? @unique
   @@id([doctorId, scheduleId])
   @@map("doctor_schedules")
 }
@@ -157,8 +186,8 @@ model Review {
   id        String  @id @default(uuid())
   patientId String
   patient   Patient @relation(fields: [patientId], references: [id])
-  doctorId String
-  doctor   Doctor @relation(fields: [doctorId], references: [id])
+  doctorId  String
+  doctor    Doctor @relation(fields: [doctorId], references: [id])
   rating    Float
   comment   String
   createdAt DateTime @default(now())
@@ -182,6 +211,11 @@ enum MaritalStatus {
   UNMARRIED
 }
 
+enum PaymentStatus {
+  PAID
+  UNPAID
+}
+
 enum UserStatus{
   ACTIVE
   BLOCKED
@@ -193,6 +227,12 @@ SUPER_ADMIN
   ADMIN
   DOCTOR
   PATIENT
+}
+enum AppointmentStatus {
+  SCHEDULED
+  INPROGRESS
+  COMPLETED
+  CANCELED
 }
 enum Gender{
   MALE

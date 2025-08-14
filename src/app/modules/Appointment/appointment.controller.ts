@@ -5,6 +5,8 @@ import catchAsync from "../../../shared/catchAsync";
 import { IAuthUser } from "../../interfaces/common";
 import sendResponse from "../../../shared/sendResponse";
 import pick from "../../../shared/pick";
+import { AppointmentService } from "./appointment.service";
+import { appointmentFilterableFields } from "./appointment.constant";
 
 const createAppointment = catchAsync(
   async (req: Request & { user?: IAuthUser }, res: Response) => {

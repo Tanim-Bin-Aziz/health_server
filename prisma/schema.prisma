@@ -46,6 +46,7 @@ model Doctor {
   appointment         Appointment[]
   review              Review[]
   @@map("doctors")
+  prescription Prescription[]
 }
 
 model Specialties {
@@ -98,6 +99,7 @@ model Patient{
   @@map("patients")
 
 
+  prescription Prescription[]
 }
 
 
@@ -121,6 +123,7 @@ model Appointment {
 
   @@map("appointments")
   
+  prescription Prescription?
 }
 
 
@@ -207,6 +210,27 @@ model Review {
 
   @@map("reviews")
 }
+
+model Prescription {
+  id            String      @id @default(uuid())
+  appointmentId String      @unique
+  appointment   Appointment @relation(fields: [appointmentId], references: [id])
+
+  doctorId String
+  doctor   Doctor @relation(fields: [doctorId], references: [id])
+
+  patientId String
+  patient   Patient @relation(fields: [patientId], references: [id])
+
+  instructions String
+  followUpDate DateTime?
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+
+  @@map("prescriptions")
+}
+
+
 
 enum BloodGroup {
   A_POSITIVE

@@ -1,0 +1,45 @@
+{
+    "keep": {
+        "days": true,
+        "amount": 14
+    },
+    "auditLog": "D:\\Eng Course\\Full-Stack-App\\HealthCare-Server\\logs\\winston\\errors\\.22533185e9f71e2e264c99a3c82b7992c5099320-audit.json",
+    "files": [
+        {
+            "date": 1764141112470,
+            "name": "D:\\Eng Course\\Full-Stack-App\\HealthCare-Server\\logs\\winston\\errors\\phu-2025-26-11-13-error.log",
+            "hash": "83e0ccec1b1fc8dbbe4e022aec7f0e75863510861e04d158ef185e8a82e34a73"
+        },
+        {
+            "date": 1764397597194,
+            "name": "D:\\Eng Course\\Full-Stack-App\\HealthCare-Server\\logs\\winston\\errors\\phu-2025-29-11-12-error.log",
+            "hash": "96b44357162444eee3d3332df99d58ba6d0b1420dc6bdb08bf1346e8690769eb"
+        },
+        {
+            "date": 1764407620073,
+            "name": "D:\\Eng Course\\Full-Stack-App\\HealthCare-Server\\logs\\winston\\errors\\phu-2025-29-11-15-error.log",
+            "hash": "fc5e0f841638868dd6b41e5739074c78f7318cc70de346b988319ea972bd70fb"
+        },
+        {
+            "date": 1764410439393,
+            "name": "D:\\Eng Course\\Full-Stack-App\\HealthCare-Server\\logs\\winston\\errors\\phu-2025-29-11-16-error.log",
+            "hash": "25d7e0764f02eddc73aed5a3736b96b5981167de6e8e905a171b884f97f17f20"
+        },
+        {
+            "date": 1765027653763,
+            "name": "D:\\Eng Course\\Full-Stack-App\\HealthCare-Server\\logs\\winston\\errors\\phu-2025-06-12-19-error.log",
+            "hash": "3b25b2967bdeebbfc6ba5024154ba88a84082bf6fc5a6356638dff733ef5e425"
+        },
+        {
+            "date": 1765031235740,
+            "name": "D:\\Eng Course\\Full-Stack-App\\HealthCare-Server\\logs\\winston\\errors\\phu-2025-06-12-20-error.log",
+            "hash": "2d5d8a63cf7ba9cc974e98bc78ef2b18743694a4841c1e6f5db5d48708c3758f"
+        },
+        {
+            "date": 1765282501463,
+            "name": "D:\\Eng Course\\Full-Stack-App\\HealthCare-Server\\logs\\winston\\errors\\phu-2025-09-12-18-error.log",
+            "hash": "d5852e59e08c60c155418aaa984d8a9e37ab96a19a5f5dd4a5570be99fceaa9e"
+        }
+    ],
+    "hashType": "sha256"
+}

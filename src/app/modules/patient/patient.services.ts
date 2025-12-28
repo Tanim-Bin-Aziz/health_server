@@ -9,14 +9,10 @@ import ApiError from '../../../errors/ApiError';
 import httpStatus from 'http-status';
 import bcrypt from 'bcryptjs';
 
-/**
- * GET ALL PATIENTS
- */
 const getAllFromDB = async (
   filters: IPatientFilterRequest,
   options: IPaginationOptions,
 ): Promise<IGenericResponse<any[]>> => {
-  // Default limit 1000 per page
   if (!options.limit) options.limit = 1000;
 
   const { limit, page, skip } = paginationHelpers.calculatePagination(options);
@@ -45,11 +41,10 @@ const getAllFromDB = async (
   const whereConditions: Prisma.PatientWhereInput =
     andConditions.length > 0 ? { AND: andConditions } : {};
 
-  // Default orderBy oldest first
   const orderByObj =
     options.sortBy && options.sortOrder
       ? { [options.sortBy]: options.sortOrder }
-      : { createdAt: 'asc' }; // ✅ oldest first
+      : { createdAt: 'asc' };
 
   const result = await prisma.patient.findMany({
     include: {
@@ -75,7 +70,7 @@ const getAllFromDB = async (
     email: p.email,
     contactNumber: p.contactNumber,
     createdAt: p.createdAt,
-    serial: skip + idx + 1, // ✅ fixed serial number across pages
+    serial: skip + idx + 1,
     doctor: p.appointments?.[0]?.doctor
       ? { id: p.appointments[0].doctor.id, name: p.appointments[0].doctor.name }
       : null,
@@ -84,9 +79,6 @@ const getAllFromDB = async (
   return { meta: { total, page, limit }, data: mapped };
 };
 
-/**
- * GET BY ID
- */
 const getByIdFromDB = async (id: string): Promise<Patient | null> => {
   return prisma.patient.findUnique({
     where: { id },
@@ -94,9 +86,6 @@ const getByIdFromDB = async (id: string): Promise<Patient | null> => {
   });
 };
 
-/**
- * GET PROFILE
- */
 const getProfileById = async (id: string) => {
   const patient = await prisma.patient.findUnique({
     where: { id, isDeleted: false },
@@ -115,9 +104,6 @@ const getProfileById = async (id: string) => {
   return patient;
 };
 
-/**
- * CREATE PATIENT
- */
 const createIntoDB = async (payload: IPatientUpdate): Promise<Patient> => {
   return await prisma.$transaction(async tx => {
     const defaultPassword = payload.password || 'default123';
@@ -159,9 +145,6 @@ const createIntoDB = async (payload: IPatientUpdate): Promise<Patient> => {
   });
 };
 
-/**
- * UPDATE PATIENT
- */
 const updateIntoDB = async (
   id: string,
   payload: Partial<IPatientUpdate>,
@@ -202,9 +185,6 @@ const updateIntoDB = async (
   });
 };
 
-/**
- * HARD DELETE PATIENT
- */
 const deleteFromDB = async (id: string): Promise<Patient> => {
   return prisma.$transaction(async tx => {
     await tx.patientHelthData.deleteMany({ where: { patientId: id } });
@@ -217,9 +197,6 @@ const deleteFromDB = async (id: string): Promise<Patient> => {
   });
 };
 
-/**
- * SOFT DELETE PATIENT
- */
 const softDelete = async (id: string): Promise<Patient> => {
   return prisma.$transaction(async tx => {
     const deletedPatient = await tx.patient.update({

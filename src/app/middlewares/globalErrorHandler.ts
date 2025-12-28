@@ -17,11 +17,11 @@ const globalErrorHandler: ErrorRequestHandler = (
   error,
   req: Request,
   res: Response,
-  next: NextFunction
+  next: NextFunction,
 ) => {
   config.env === 'development'
-    ? console.log(`🐱‍🏍 globalErrorHandler ~~`, { error })
-    : errorlogger.error(`🐱‍🏍 globalErrorHandler ~~`, error);
+    ? console.log(`🐱 globalErrorHandler ~~`, { error })
+    : errorlogger.error(`🐱 globalErrorHandler ~~`, error);
 
   let statusCode = 500;
   let message = 'Something went wrong !';
@@ -47,21 +47,21 @@ const globalErrorHandler: ErrorRequestHandler = (
     message = error.message;
     errorMessages = error?.message
       ? [
-        {
-          path: '',
-          message: error?.message,
-        },
-      ]
+          {
+            path: '',
+            message: error?.message,
+          },
+        ]
       : [];
   } else if (error instanceof Error) {
     message = error?.message;
     errorMessages = error?.message
       ? [
-        {
-          path: '',
-          message: error?.message,
-        },
-      ]
+          {
+            path: '',
+            message: error?.message,
+          },
+        ]
       : [];
   }
 

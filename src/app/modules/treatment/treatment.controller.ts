@@ -5,9 +5,6 @@ import {
   validateUpdatePrice,
 } from './treatment.validation';
 
-/**
- * Public: get all treatments
- */
 export const getAllTreatments = async (req: Request, res: Response) => {
   try {
     const search = (req.query.search as string) || undefined;
@@ -22,9 +19,6 @@ export const getAllTreatments = async (req: Request, res: Response) => {
   }
 };
 
-/**
- * Admin: create treatment
- */
 export const createTreatment = async (req: Request, res: Response) => {
   try {
     const payload = req.body;
@@ -34,17 +28,14 @@ export const createTreatment = async (req: Request, res: Response) => {
         .status(400)
         .json({ success: false, message: errors.join(', ') });
 
-    // Check duplicate by name
     const existing = await service.getAllTreatments(payload.name);
     if (
       existing.some(t => t.name.toLowerCase() === payload.name.toLowerCase())
     ) {
-      return res
-        .status(409)
-        .json({
-          success: false,
-          message: 'Treatment with this name already exists',
-        });
+      return res.status(409).json({
+        success: false,
+        message: 'Treatment with this name already exists',
+      });
     }
 
     const created = await service.createTreatment({
@@ -62,9 +53,6 @@ export const createTreatment = async (req: Request, res: Response) => {
   }
 };
 
-/**
- * Admin: update treatment price
- */
 export const updatePrice = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
@@ -94,9 +82,6 @@ export const updatePrice = async (req: Request, res: Response) => {
   }
 };
 
-/**
- * Admin: delete treatment
- */
 export const deleteTreatment = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;

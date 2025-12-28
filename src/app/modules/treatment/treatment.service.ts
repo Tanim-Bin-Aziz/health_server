@@ -1,9 +1,6 @@
 import prisma from '../../../shared/prisma';
 import { Prisma } from '@prisma/client';
 
-/**
- * Get all treatments (optional search + category filter)
- */
 export const getAllTreatments = async (
   search?: string,
   categoryId?: string,
@@ -28,9 +25,6 @@ export const getAllTreatments = async (
   });
 };
 
-/**
- * Get treatment by ID
- */
 export const getTreatmentById = async (id: string) => {
   return prisma.treatment.findUnique({
     where: { id },
@@ -38,9 +32,6 @@ export const getTreatmentById = async (id: string) => {
   });
 };
 
-/**
- * Create treatment
- */
 export const createTreatment = async (data: {
   name: string;
   price: number;
@@ -50,15 +41,12 @@ export const createTreatment = async (data: {
     data: {
       name: data.name,
       price: data.price,
-      categoryId: data.categoryId, // ✅ Use categoryId directly
+      categoryId: data.categoryId,
     },
     include: { category: true },
   });
 };
 
-/**
- * Update treatment price
- */
 export const updateTreatmentPrice = async (id: string, price: number) => {
   return prisma.treatment.update({
     where: { id },
@@ -67,9 +55,6 @@ export const updateTreatmentPrice = async (id: string, price: number) => {
   });
 };
 
-/**
- * Delete treatment
- */
 export const deleteTreatment = async (id: string) => {
   return prisma.treatment.delete({
     where: { id },

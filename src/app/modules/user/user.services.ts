@@ -11,8 +11,6 @@ import { userSearchableFields } from './user.constant';
 import { Request } from 'express';
 import { IUploadFile } from '../../../interfaces/file';
 import { FileUploadHelper } from '../../../helpers/fileUploadHelper';
-// import meiliClient from '../../../shared/meilisearch';
-// const index = meiliClient.index('doctors');
 
 const createDoctor = async (req: Request) => {
   const file = req.file as IUploadFile;
@@ -36,9 +34,6 @@ const createDoctor = async (req: Request) => {
     const newDoctor = await transactionClient.doctor.create({
       data: req.body.data.doctor,
     });
-
-    // const { id, email, name, contactNumber, address } = newDoctor;
-    // await index.addDocuments([{ id, email, name, contactNumber, address }]);
 
     return newDoctor;
   });
@@ -272,7 +267,6 @@ const updateMyProfile = async (authUser: any, req: Request) => {
 
   if (profileData && 'address' in profileData) {
     const { id, email, name, contactNumber, address } = profileData;
-    // await index.updateDocuments([{ id, email, name, contactNumber, address }]);
   }
 
   return { ...profileData, ...userData };

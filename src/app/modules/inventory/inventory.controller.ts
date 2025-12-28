@@ -1,7 +1,6 @@
 import { Request, Response } from 'express';
 import * as InventoryService from './inventory.service';
 
-// 🔹 Create inventory item
 export const createItem = async (req: Request, res: Response) => {
   try {
     const item = await InventoryService.createInventoryItem(req.body);
@@ -11,7 +10,6 @@ export const createItem = async (req: Request, res: Response) => {
   }
 };
 
-// 🔹 Record usage
 export const useItem = async (req: Request, res: Response) => {
   try {
     const usage = await InventoryService.recordItemUsage(req.body);
@@ -21,7 +19,6 @@ export const useItem = async (req: Request, res: Response) => {
   }
 };
 
-// 🔹 Restock inventory
 export const restockItem = async (req: Request, res: Response) => {
   try {
     const restock = await InventoryService.restockInventoryItem(req.body);
@@ -31,7 +28,6 @@ export const restockItem = async (req: Request, res: Response) => {
   }
 };
 
-// 🔹 Get all inventory items
 export const getInventoryItems = async (req: Request, res: Response) => {
   try {
     const items = await InventoryService.getAllInventoryItems();
@@ -41,7 +37,6 @@ export const getInventoryItems = async (req: Request, res: Response) => {
   }
 };
 
-// 🔹 Get inventory usage history
 export const getUsageHistory = async (req: Request, res: Response) => {
   try {
     const usageHistory = await InventoryService.getInventoryUsageHistory();
@@ -51,7 +46,6 @@ export const getUsageHistory = async (req: Request, res: Response) => {
   }
 };
 
-// 🔹 Get all restocks
 export const getRestocks = async (req: Request, res: Response) => {
   try {
     const restocks = await InventoryService.getAllRestocks();
@@ -61,7 +55,6 @@ export const getRestocks = async (req: Request, res: Response) => {
   }
 };
 
-// 🔹 Inventory dashboard
 export const dashboard = async (req: Request, res: Response) => {
   try {
     const stats = await InventoryService.getInventoryDashboard();

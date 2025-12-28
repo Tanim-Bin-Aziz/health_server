@@ -1,12 +1,10 @@
 import { PrismaClient } from '@prisma/client';
 const prisma = new PrismaClient();
 
-// 🔹 Fetch all inventory items
 export const getAllInventoryItems = async () => {
   return prisma.inventoryItem.findMany({ orderBy: { name: 'asc' } });
 };
 
-// 🔹 Create inventory item
 export const createInventoryItem = async (data: {
   name: string;
   category?: string;
@@ -52,7 +50,6 @@ export const recordItemUsage = async (data: {
   return usage;
 };
 
-// 🔹 Restock inventory item (updated with oldUnitCost)
 export const restockInventoryItem = async (data: {
   inventoryItemId: string;
   supplierName?: string;
@@ -60,7 +57,6 @@ export const restockInventoryItem = async (data: {
   unitCost: number;
   restockedById?: string;
 }) => {
-  // Fetch the current item to get oldUnitCost
   const item = await prisma.inventoryItem.findUnique({
     where: { id: data.inventoryItemId },
   });
@@ -74,25 +70,23 @@ export const restockInventoryItem = async (data: {
       supplierName: data.supplierName,
       quantityAdded: data.quantityAdded,
       unitCost: data.unitCost,
-      oldUnitCost: item.unitCost, // store old unit cost
+      oldUnitCost: item.unitCost,
       totalCost,
       restockedById: data.restockedById,
     },
   });
 
-  // Update item stock and unit cost
   await prisma.inventoryItem.update({
     where: { id: data.inventoryItemId },
     data: {
       totalStock: { increment: data.quantityAdded },
-      unitCost: data.unitCost, // update to new unit cost
+      unitCost: data.unitCost,
     },
   });
 
   return restock;
 };
 
-// 🔹 Fetch all restocks
 export const getAllRestocks = async () => {
   return prisma.inventoryRestock.findMany({
     include: { inventoryItem: true },
@@ -100,7 +94,6 @@ export const getAllRestocks = async () => {
   });
 };
 
-// 🔹 Fetch inventory usage history
 export const getInventoryUsageHistory = async () => {
   return prisma.inventoryUsage.findMany({
     include: { inventoryItem: true, doctor: true, patient: true },
@@ -108,7 +101,6 @@ export const getInventoryUsageHistory = async () => {
   });
 };
 
-// 🔹 Inventory dashboard summary
 export const getInventoryDashboard = async () => {
   const totalItems = await prisma.inventoryItem.count();
   const totalStockValue = await prisma.inventoryItem.aggregate({
